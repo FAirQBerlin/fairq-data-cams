@@ -1,0 +1,7 @@
+# pycharm settings
+.idea
+
+# data
+*.zip
+/.env
+/fairq_data_cams/tests/data/*.idx

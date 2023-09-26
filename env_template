@@ -1,0 +1,8 @@
+# save as .env
+DB_HOST=fill_me_in
+DB_PORT=fill_me_in
+DB_NAME=fill_me_in
+DB_USERNAME=fill_me_in
+DB_PASSWORD=fill_me_in
+API_KEY=fill_me_in
+API_URL=https://ads.atmosphere.copernicus.eu/api/v2
