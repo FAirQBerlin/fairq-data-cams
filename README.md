@@ -8,7 +8,7 @@ store it in a Clickhouse database.
 
 - Get an API key for the CAMS API (https://cds.climate.copernicus.eu/user/register?destination=%2F%23!%2Fhome)
 - Create an .env file in the project folder, see `env_template` for the structure
-- Create database as described in https://github.com/INWT/fairq-data/tree/main/inst/db (schema `fairq_raw`)
+- Create database as described in https://github.com/fairqBerlin/fairq-data/tree/main/inst/db (schema `fairq_raw`)
 
 
 ## Most important files
@@ -30,7 +30,7 @@ APIs:
 - CAMS-Global: https://ads.atmosphere.copernicus.eu/cdsapp#!/dataset/cams-global-atmospheric-composition-forecasts?tab=form
 
 Documentation:
-- CAMS-EU: https://confluence.ecmwf.int/display/CKB/CAMS+Regional%3A+European+air+quality+analysis+and+forecast+data+documentation 
+- CAMS-EU: https://confluence.ecmwf.int/display/CKB/CAMS+Regional%3A+European+air+quality+analysis+and+forecast+data+documentation
 - CAMS-Global: https://confluence.ecmwf.int/display/CKB/CAMS%3A+Global+atmospheric+composition+forecast+data+documentation
 
 To process data from the CAMS-Global API, you need to install a system dependency:
