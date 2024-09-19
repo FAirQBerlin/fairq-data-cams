@@ -115,7 +115,7 @@ def test_new_api():
             "95",
         ],
         "area": [52.7, 13, 52.3, 13.8],
-        "format": "netcdf_zip",
+        "format": "netcdf",
         "model": "ensemble",
         "level": "0",
     }
