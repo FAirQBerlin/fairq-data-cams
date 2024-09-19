@@ -47,7 +47,7 @@ class ApiRequest:
         }
 
         if self.use_new_api:
-            request_body["format"] = "netcdf"
+            request_body["format"] = "netcdf_zip"
             request_body["model"] = "ensemble"
             request_body["level"] = "0"
             request_body["leadtime_hour"] = [str(x) for x in (range(4 * 24))]
@@ -74,7 +74,7 @@ class ApiRequest:
         """
         Target format delivered to the API
         """
-        return "download.nc" if self.use_new_api else "download.netcdf_zip"
+        return "download_netcdf.zip"
 
     def check_if_new_api(self) -> bool:
         """
