@@ -13,9 +13,7 @@ store it in a Clickhouse database.
 
 ## Most important files
 
-- `main_old_api.py`: Retrieves data from the CAMS global API (see below) for older dates and writes it to a Clickhous DB
-- `main_new_api.py`: Retrieves data from the CAMS EU API (see below) for newer dates and writes it to a Clickhous DB
-
+- `get_last_3_years.py`: Retrieves data from the CAMS EU API (see below) for newer dates (Beginning in May 2019) and writes it to a Clickhous DB
 
 ## Input and output
 

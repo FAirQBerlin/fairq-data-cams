@@ -1,10 +1,9 @@
-import logging
 import os
+import subprocess
 from logging.config import dictConfig
 from zipfile import ZipFile
 
 import cdsapi
-import wget
 
 from logging_config.logger_config import get_logger_config
 
@@ -20,32 +19,40 @@ def api_client() -> cdsapi.Client:
     return cdsapi.Client(url=os.getenv("API_URL"), key=os.getenv("API_KEY"), verify=True, progress=False)
 
 
-def download_data_from_api(api_file_location) -> None:
-    """
-    Downloads data from the API. If it's an nc or grib file, it is directly stored in data/nc resp. data/grib.
-    If it's a zip file (containing nc), it's first stored in data/zip and then unpacked to the data/nc folder.
-    :param api_file_location: location from api result
-    :return: nothing
-    """
-    file_extension = api_file_location.split(".")[-1]
-    file_path = os.path.join("data", file_extension, os.path.basename(api_file_location))
-
-    if file_extension in ["zip", "nc", "grib"]:
-        if os.path.exists(file_path):
-            logging.info(f".{file_extension} file already exists")
-        else:
-            logging.info(f"Downloading .{file_extension} file")
-            wget.download(api_file_location, out=os.path.join("data", file_extension))
-
-    if file_extension == "zip":
-        logging.info("Unzipping {}".format(file_path))
-        unzip_file_to_nc_folder(file_path)
-
-
-def unzip_file_to_nc_folder(file_path: str) -> None:
+def unzip_file_to_nc_folder(file_path: str, suffix: str = "") -> None:
     """
     Unzip a given zip file to the data/nc folder
     :param file_path: local path of the zip file
+    :param suffix: suffix to add to each file name, excluding extension; defaults to an empty string
     """
+    extraction_folder = os.path.join("data", "nc")
+
     with ZipFile(file_path, "r") as zip_obj:
-        zip_obj.extractall(os.path.join("data", "nc"))
+        # List of all files and directories in the zip file
+        zip_contents = zip_obj.namelist()
+
+        # Extract each file individually
+        for file_name in zip_contents:
+            # Extract the file to the destination folder
+            zip_obj.extract(file_name, extraction_folder)
+
+            # Full path of the extracted file
+            original_file_path = os.path.join(extraction_folder, file_name)
+
+            # Apply the suffix if provided
+            if suffix:
+                # Split the file name and extension
+                file_base, file_extension = os.path.splitext(file_name)
+                # Append the suffix to the base name
+                new_file_name = f"{file_base}{suffix}{file_extension}"
+                new_file_path = os.path.join(extraction_folder, new_file_name)
+                # Rename the file to include the suffix
+                os.rename(original_file_path, new_file_path)
+
+
+def rm_old_data() -> None:
+    """
+    Remove all zip and all nc files
+    """
+    subprocess.run("rm -f *.zip", shell=True, cwd=".")
+    subprocess.run("rm -f *.nc", shell=True, cwd="data/nc")

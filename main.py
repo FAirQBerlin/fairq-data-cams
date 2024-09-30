@@ -7,8 +7,10 @@ from dateutil.utils import today
 
 from fairq_data_cams.api_request import ApiRequest
 from fairq_data_cams.db_connect import send_data_clickhouse
-from fairq_data_cams.retrieve_api_data import api_client, unzip_file_to_nc_folder
+from fairq_data_cams.retrieve_api_data import api_client, rm_old_data, unzip_file_to_nc_folder
 from fairq_data_cams.transform_nc_data import all_nc_files_to_one_df
+
+rm_old_data()
 
 date_start = datetime.strftime(today() - timedelta(days=1), "%Y-%m-%d")
 date_end = datetime.strftime(today(), "%Y-%m-%d")

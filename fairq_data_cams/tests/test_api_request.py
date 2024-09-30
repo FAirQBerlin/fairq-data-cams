@@ -8,7 +8,6 @@ def test_new_api():
 
     assert request.date_start == "2025-01-01"
     assert request.date_end == "2025-01-02"
-    assert request.use_new_api
     assert request.api_address() == "cams-europe-air-quality-forecasts"
     assert request.format() == "download_netcdf.zip"
     assert request.api_request_body() == {
@@ -115,28 +114,10 @@ def test_new_api():
             "95",
         ],
         "area": [52.7, 13, 52.3, 13.8],
-        "format": "netcdf",
+        "format": "netcdf_zip",
         "model": "ensemble",
         "level": "0",
     }
-
-
-def test_old_api_after_july_7_2019():
-    request = ApiRequest(date_start="2019-07-07", date_end="2019-07-08")
-    request.use_new_api = False
-    assert request.api_request_body()["model_level"] == "137"
-
-
-def test_not_depending_on_date():
-    request_new = ApiRequest(date_start="2025-01-01", date_end="2025-01-02")
-    request_old = ApiRequest(date_start="2015-01-01", date_end="2015-01-02")
-
-    # assert request_old.berlin_bbox == request_new.berlin_bbox == [52.7, 13, 52.3, 13.8]
-    assert (
-        request_old.variables
-        == request_new.variables
-        == ["nitrogen_dioxide", "particulate_matter_10um", "particulate_matter_2.5um"]
-    )
 
 
 def check_error():
