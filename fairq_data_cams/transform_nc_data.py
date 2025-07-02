@@ -53,7 +53,7 @@ def nc_file_to_df(file_path: str) -> pd.DataFrame:
     :return: data frame with all columns from the nc file where all information is in the columns (and not in the row
     index anymore)
     """
-    ds = xr.open_dataset(file_path)
+    ds = xr.open_dataset(file_path, decode_timedelta=True)
     df = ds.to_dataframe()
     return df.reset_index()
 
