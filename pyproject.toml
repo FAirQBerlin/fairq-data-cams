@@ -27,3 +27,17 @@ exclude = '''
                      # the root of the project
 )
 '''
+
+[tool.bumpver]
+current_version = "2025.09.0"
+version_pattern = "YYYY.0M.PATCH"
+commit_message = "bump version to {old_version} -> {new_version}"
+tag_message = "v{new_version}"
+commit = true
+tag = true
+push = false
+
+[tool.bumpver.file_patterns]
+"fairq_data_cams/__init__.py" = [
+    "{version}",
+]
