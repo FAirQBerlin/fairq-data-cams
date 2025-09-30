@@ -11,7 +11,7 @@ updates:
     schedule:
       interval: "monthly"
     assignees:
-      - "jan-abel-inwt"
+      - "SarahWagner"
       - "milanflach"
     groups:
       dependencies:
