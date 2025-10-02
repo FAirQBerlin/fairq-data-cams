@@ -4,14 +4,14 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-cdsapi = "==0.7.6"
-cfgrib = "==0.9.15.0"
+cdsapi = "==0.7.7"
+cfgrib = "==0.9.15.1"
 clickhouse-driver = "==0.2.9"
 eccodes = "==2.43.0"
 glob2 = "==0.7.0"
 netcdf4 = "==1.7.2"
 numpy = "==2.2.6"
-pandas = "==2.3.2"
+pandas = "==2.3.3"
 python-dateutil = "==2.9.0.post0"
 python-dotenv = "==1.1.1"
 requests = "==2.32.5"
@@ -19,12 +19,12 @@ wget = "==3.2.0"
 xarray = "==2025.6.1"
 
 [dev-packages]
-black = "==25.1.0"
+black = "==25.9.0"
 flake8 = "==7.3.0"
 isort = "==6.0.1"
-mypy = "==1.17.1"
-pytest = "==8.4.1"
-pytest-cov = "==6.2.1"
+mypy = "==1.18.2"
+pytest = "==8.4.2"
+pytest-cov = "==7.0.0"
 bumpver = "==2025.1131"
 
 [requires]
