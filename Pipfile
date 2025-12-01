@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 cdsapi = "==0.7.7"
 cfgrib = "==0.9.15.1"
-clickhouse-driver = "==0.2.9"
+clickhouse-driver = "==0.2.10"
 eccodes = "==2.44.0"
 glob2 = "==0.7.0"
 netcdf4 = "==1.7.3"
@@ -19,11 +19,11 @@ wget = "==3.2.0"
 xarray = "==2025.6.1"
 
 [dev-packages]
-black = "==25.9.0"
+black = "==25.11.0"
 flake8 = "==7.3.0"
 isort = "==7.0.0"
-mypy = "==1.18.2"
-pytest = "==8.4.2"
+mypy = "==1.19.0"
+pytest = "==9.0.1"
 pytest-cov = "==7.0.0"
 bumpver = "==2025.1131"
 
