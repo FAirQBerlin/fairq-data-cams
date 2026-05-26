@@ -1,6 +1,6 @@
-FROM python:3.10
+FROM python:3.14-slim
 
-RUN pip3 install pipenv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -19,4 +19,6 @@ WORKDIR /usr/src/app
 
 COPY . ./
 
-RUN set -ex && pipenv install --dev --deploy --system
+RUN uv sync --frozen
+
+ENV PATH="/usr/src/app/.venv/bin:$PATH"

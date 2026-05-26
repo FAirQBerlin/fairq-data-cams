@@ -5,3 +5,6 @@
 *.zip
 /.env
 /fairq_data_cams/tests/data/*.idx
+
+# Cache from uv
+__pycache__
