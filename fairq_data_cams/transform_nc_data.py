@@ -3,6 +3,10 @@
 
 import re
 from datetime import datetime
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 import netCDF4
 import pandas as pd
@@ -29,7 +33,7 @@ def all_nc_files_to_one_df() -> pd.DataFrame:
 # Functions processing one file / one dataframe ------------------------------------------------------------------------
 
 
-def df_from_nc_file(file_path: str) -> pd.DataFrame:
+def df_from_nc_file(file_path: str | Path) -> pd.DataFrame:
     """
     Wrapper around all functions to extract a df from one nc file
     :param file_path: path to nc file
@@ -41,11 +45,10 @@ def df_from_nc_file(file_path: str) -> pd.DataFrame:
     df = df.rename(
         columns={"latitude": "lat", "longitude": "lon", "no2_conc": "no2", "pm10_conc": "pm10", "pm2p5_conc": "pm25"}
     )
-    df = df.loc[:, ["date_time", "date_forecast", "lat", "lon", "no2", "pm25", "pm10"]]
-    return df
+    return df.filter(items=["date_time", "date_forecast", "lat", "lon", "no2", "pm25", "pm10"])
 
 
-def nc_file_to_df(file_path: str) -> pd.DataFrame:
+def nc_file_to_df(file_path: str | Path) -> pd.DataFrame:
     """
     Transform data from an nc file to a data frame
 
@@ -58,7 +61,7 @@ def nc_file_to_df(file_path: str) -> pd.DataFrame:
     return df.reset_index()
 
 
-def add_date_columns(df: pd.DataFrame, file_path: str) -> pd.DataFrame:
+def add_date_columns(df: pd.DataFrame, file_path: str | Path) -> pd.DataFrame:
     """
     Add two date columns: when the forecast was made and for which day and hour. The latter is transformed from UTC into
     Berlin time
@@ -70,7 +73,9 @@ def add_date_columns(df: pd.DataFrame, file_path: str) -> pd.DataFrame:
     nc = netCDF4.Dataset(file_path)
     date_info = nc.FORECAST
     match_str = re.search(r"\d{4}\d{2}\d{2}", date_info)
-    assert match_str is not None  # To make mypy happy because we are sure that this will never be None
+    if match_str is None:
+        msg = f"Could not parse forecast date from: {date_info}"
+        raise ValueError(msg)
     date_forecast = datetime.strptime(match_str.group(), "%Y%m%d")
     df["date_forecast"] = date_forecast.date()
     df["date_time"] = date_forecast + df["time"]

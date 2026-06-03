@@ -8,11 +8,11 @@ start_higher_model_level = datetime(2019, 7, 7)
 
 class ApiRequest:
     """
-    Class to prepare the API request. The API to get European-CAMS-data provides data for threee years in the past and
+    Class to prepare the API request. The API to get European-CAMS-data provides data for three years in the past and
     four days in the future.
     """
 
-    def __init__(self, date_start: str, date_end: str):
+    def __init__(self, date_start: str, date_end: str) -> None:
         """
         :param date_start: first date of forecast, e.g., "2020-01-05"
         :param date_end: last date of forecast, e.g., "2020-01-10"
@@ -33,7 +33,7 @@ class ApiRequest:
         """
         date_range = f"{self.date_start}/{self.date_end}"
 
-        request_body = {
+        return {
             "date": date_range,
             "type": "forecast",
             "variable": self.variables,
@@ -44,8 +44,6 @@ class ApiRequest:
             "level": "0",
             "leadtime_hour": [str(x) for x in (range(4 * 24))],
         }
-
-        return request_body
 
     def api_address(self) -> str:
         """

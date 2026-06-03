@@ -1,5 +1,8 @@
-import glob
-import os
+from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import pandas as pd
 
 
 def list_files_of_type(file_type: str) -> list:
@@ -8,11 +11,10 @@ def list_files_of_type(file_type: str) -> list:
     :param file_type: "nc" or "grib"
     :return: list with full file paths relative to project root
     """
-    pattern = os.path.join("data", file_type, f"*.{file_type}")
-    return glob.glob(pattern)
+    return [str(p) for p in Path("data", file_type).glob(f"*.{file_type}")]
 
 
-def check_for_duplicates(full_df):
+def check_for_duplicates(full_df: pd.DataFrame) -> None:
     """
     Check if every combination of "date_time", "date_forecast", "lat", and "lon" appears only once
     :param full_df: full data frame with rows from all nc files

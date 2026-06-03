@@ -1,0 +1,32 @@
+{
+  "name": "test-a",
+  "image": "mcr.microsoft.com/devcontainers/python:3.14",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "inwtlab.inwt-python-ide-v2",
+        "charliermarsh.ruff",
+        "astral-sh.ty"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.formatOnSave": true
+        }
+      }
+    }
+  },
+  "postCreateCommand": "curl -fsSL https://opencode.ai/install | bash && mkdir -p ~/.local/share/opencode && ln -s /mnt/opencode-auth.json ~/.local/share/opencode/auth.json && pip install -e '.[dev]'",
+  "mounts": [
+    "source=${localEnv:HOME}/.config/opencode,target=/home/vscode/.config/opencode,type=bind,consistency=cached,readonly",
+    "source=${localEnv:HOME}/.local/share/opencode/auth.json,target=/mnt/opencode-auth.json,type=bind,consistency=cached,readonly"
+  ],
+  "remoteUser": "vscode",
+  "remoteEnv": {
+    "PATH": "/home/vscode/.opencode:${containerEnv:PATH}"
+  }
+}

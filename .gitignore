@@ -8,3 +8,6 @@
 
 # Cache from uv
 __pycache__
+
+# Logs
+*.log

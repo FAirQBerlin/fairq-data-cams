@@ -1,3 +1,8 @@
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -7,7 +12,7 @@ from fairq_data_cams.transform_nc_data import nc_file_to_df
 
 
 @pytest.fixture
-def dummy_nc_file(tmp_path):
+def dummy_nc_file(tmp_path: Path) -> str:
     """
     Pytest fixture to create a dummy .nc file for testing.
     The file will be created in a temporary directory managed by pytest.
@@ -26,10 +31,10 @@ def dummy_nc_file(tmp_path):
 
     ds.to_netcdf(file_path)
 
-    yield str(file_path)
+    return str(file_path)
 
 
-def test_nc_file_to_df_conversion(dummy_nc_file):
+def test_nc_file_to_df_conversion(dummy_nc_file: str) -> None:
     """
     Test case for the nc_file_to_df function.
     It uses the dummy_nc_file fixture to get a path to a test .nc file.

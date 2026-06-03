@@ -1,13 +1,16 @@
 import logging
 import os
 from logging.config import dictConfig
+from typing import TYPE_CHECKING
 
-import pandas as pd
+if TYPE_CHECKING:
+    import pandas as pd
 from clickhouse_driver import Client
 from dotenv import load_dotenv
 
 from logging_config.logger_config import get_logger_config
 
+logger = logging.getLogger(__name__)
 load_dotenv()
 
 dictConfig(get_logger_config())
@@ -48,49 +51,49 @@ def send_data_clickhouse(
     :param table_name: name of db table
     """
     if mode not in ["insert", "replace", "truncate"]:
-        raise ValueError("Allowed modes are: insert, replace, truncate")
+        msg = "Allowed modes are: insert, replace, truncate"
+        raise ValueError(msg)
 
     if mode == "replace":
         check_for_replacing_merge_tree(table_name, schema_name)
 
     if mode == "truncate":
         with db_connect() as db:
-            logging.info("Truncating table...")
+            logger.info("Truncating table...")
             db.execute(f"truncate table {schema_name}.{table_name};")
 
     if df.shape[0] > 0:
         with db_connect() as db:
-            logging.info("Sending data to database...")
+            logger.info("Sending data to database...")
             db.insert_dataframe(f"INSERT INTO {schema_name}.{table_name} VALUES", df)
 
             if mode == "replace":
-                logging.info("Optimizing table to remove duplicates...")
+                logger.info("Optimizing table to remove duplicates...")
                 db.execute(f"Optimize table {schema_name}.{table_name} final;")
             if materialized_view_exists(table_name, schema_name):
-                logging.info("Optimize table processed by materialized view...")
+                logger.info("Optimize table processed by materialized view...")
                 db.execute(f"Optimize table {schema_name}.{table_name}_processed final;")
 
-            logging.info("Done <3")
+            logger.info("Done <3")
 
 
-def check_for_replacing_merge_tree(table_name: str, schema_name: str):
+def check_for_replacing_merge_tree(table_name: str, schema_name: str) -> None:
     """
     Check if target table has engine "check_for_replacing_merge_tree"; raise error if not.
     :param table_name: name of the table
     :param schema_name: name of the database schema
     """
     with db_connect() as db:
-        logging.info("Checking if table engine is 'ReplacingMergeTree'...")
+        logger.info("Checking if table engine is 'ReplacingMergeTree'...")
         table_engine = db.execute(
-            f"SELECT engine FROM system.tables where database = '{schema_name}' and name = '{table_name}';"
+            f"SELECT engine FROM system.tables where database = '{schema_name}' and name = '{table_name}';"  # noqa: S608 - internal identifiers only, no user input
         )[0][0]
     if table_engine != "ReplacingMergeTree":
-        raise Exception(
-            f"Can't use mode 'replace' for table {table_name} since as table engine is not ReplacingMergeTree."
-        )
+        msg = f"Can't use mode 'replace' for table {table_name} since table engine is not ReplacingMergeTree."
+        raise ValueError(msg)
 
 
-def materialized_view_exists(table_name: str, schema_name: str):
+def materialized_view_exists(table_name: str, schema_name: str) -> bool:
     """
     Check if target table for materialized view exists, so
     it can be optimized after insert as well.
@@ -98,6 +101,6 @@ def materialized_view_exists(table_name: str, schema_name: str):
     :param schema_name: name of the database schema
     """
     with db_connect() as db:
-        logging.info("Checking if materialized view exists ...")
+        logger.info("Checking if materialized view exists ...")
         mv_exists = db.execute(f"exists {schema_name}.{table_name}_processed;")[0][0]
     return mv_exists == 1

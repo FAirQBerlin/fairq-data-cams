@@ -3,7 +3,7 @@ name = "fairq-data-cams"
 version = "2026.05.0"
 description = "Module that processes CAMS data"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = "==3.14.*"
 dependencies = [
     "cdsapi==0.7.7",
     "cfgrib==0.9.15.1",
@@ -22,30 +22,27 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "mypy==1.20.2",
     "pytest==9.0.3",
     "pytest-cov==7.1.0",
     "bumpver==2025.1131",
-    "types-python-dateutil>=2.9.0.20260508",
     "ruff>=0.15.13",
+    "ty>=0.0.39",
 ]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
-
-[tool.nitpick]
-style = "https://raw.githubusercontent.com/wemake-services/wemake-python-styleguide/master/styles/nitpick-style.toml"
-
 [tool.ruff]
 line-length = 120
 target-version = "py314"
 
 [tool.ruff.lint]
-select = ["E", "F", "I"]
+select = ["ALL"]
+per-file-ignores = { "*/test_*.py" = ["S101"] }
+ignore = ["COM812", "D", "DTZ"]
 
 [tool.bumpver]
-current_version = "2025.09.0"
+current_version = "2026.06.0"
 version_pattern = "YYYY.0M.PATCH"
 commit_message = "bump version to {old_version} -> {new_version}"
 tag_message = "v{new_version}"

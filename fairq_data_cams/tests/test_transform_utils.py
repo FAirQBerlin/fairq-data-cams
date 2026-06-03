@@ -1,10 +1,10 @@
 import pandas as pd
-from pytest import raises
+import pytest
 
 from fairq_data_cams.transform_utils import check_for_duplicates
 
 
-def test_check_for_duplicates():
+def test_check_for_duplicates() -> None:
     df_ok = pd.DataFrame(
         {"date_time": [1, 1, 2, 2], "date_forecast": [1, 1, 2, 2], "lat": [2, 3, 4, 5], "lon": [2, 3, 4, 4]}
     )
@@ -13,5 +13,5 @@ def test_check_for_duplicates():
     )
     check_for_duplicates(df_ok)
 
-    with raises(ValueError):
+    with pytest.raises(ValueError, match=r"There are duplicates in the data."):
         check_for_duplicates(df_duplicates)

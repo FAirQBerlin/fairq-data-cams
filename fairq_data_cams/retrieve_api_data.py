@@ -1,6 +1,7 @@
 import os
 import subprocess
 from logging.config import dictConfig
+from pathlib import Path
 from zipfile import ZipFile
 
 import cdsapi
@@ -19,13 +20,13 @@ def api_client() -> cdsapi.Client:
     return cdsapi.Client(url=os.getenv("API_URL"), key=os.getenv("API_KEY"), verify=True, progress=False)
 
 
-def unzip_file_to_nc_folder(file_path: str, suffix: str = "") -> None:
+def unzip_file_to_nc_folder(file_path: str, attach: str = "") -> None:
     """
     Unzip a given zip file to the data/nc folder
     :param file_path: local path of the zip file
-    :param suffix: suffix to add to each file name, excluding extension; defaults to an empty string
+    :param attach: addition to each file name, excluding extension; defaults to an empty string
     """
-    extraction_folder = os.path.join("data", "nc")
+    extraction_folder = Path("data") / "nc"
 
     with ZipFile(file_path, "r") as zip_obj:
         # List of all files and directories in the zip file
@@ -37,22 +38,21 @@ def unzip_file_to_nc_folder(file_path: str, suffix: str = "") -> None:
             zip_obj.extract(file_name, extraction_folder)
 
             # Full path of the extracted file
-            original_file_path = os.path.join(extraction_folder, file_name)
+            original_file_path = extraction_folder / file_name
 
-            # Apply the suffix if provided
-            if suffix:
+            # Apply the attachment if provided
+            if attach:
                 # Split the file name and extension
-                file_base, file_extension = os.path.splitext(file_name)
-                # Append the suffix to the base name
-                new_file_name = f"{file_base}{suffix}{file_extension}"
-                new_file_path = os.path.join(extraction_folder, new_file_name)
-                # Rename the file to include the suffix
-                os.rename(original_file_path, new_file_path)
+                file_base = Path(file_name).stem
+                file_extension = Path(file_name).suffix
+                # Append the attachment to the base name
+                new_file_name = f"{file_base}{attach}{file_extension}"
+                new_file_path = extraction_folder / new_file_name
+                # Rename the file to include the attachment
+                original_file_path.rename(new_file_path)
 
 
 def rm_old_data() -> None:
-    """
-    Remove all zip and all nc files
-    """
-    subprocess.run("rm -f *.zip", shell=True, cwd=".")
-    subprocess.run("rm -f *.nc", shell=True, cwd="data/nc")
+    """Remove all zip and all nc files."""
+    subprocess.run(["/bin/rm", "-f", "*.zip"], cwd=".", check=True)
+    subprocess.run(["/bin/rm", "-f", "*.nc"], cwd="data/nc", check=True)

@@ -1,9 +1,9 @@
-from pytest import raises
+import pytest
 
 from fairq_data_cams.api_request import ApiRequest
 
 
-def test_new_api():
+def test_new_api() -> None:
     request = ApiRequest(date_start="2025-01-01", date_end="2025-01-02")
 
     assert request.date_start == "2025-01-01"
@@ -120,6 +120,7 @@ def test_new_api():
     }
 
 
-def check_error():
-    with raises(ValueError):
+def check_error() -> None:
+    """Test that ApiRequest raises ValueError for invalid date range."""
+    with pytest.raises(ValueError, match="Invalid date range!"):
         ApiRequest(date_start="2019-03-01", date_end="2019-07-01")

@@ -18,7 +18,6 @@ available_dates_european_cams_data = [datetime.strftime(x, "%Y-%m-%d") for x in 
 
 client = api_client()
 for date in available_dates_european_cams_data:
-    print(date)
     request = ApiRequest(date_start=date, date_end=date)
     target_file_name = f"download_netcdf_{date}.zip"
     client.retrieve(request.api_address(), request.api_request_body(), target_file_name)
