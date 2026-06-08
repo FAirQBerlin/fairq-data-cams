@@ -12,19 +12,19 @@ dependencies = [
     "glob2==0.7.0",
     "netcdf4==1.7.4",
     "numpy>=2.2.6",
-    "pandas==2.3.3",
+    "pandas==3.0.3",
     "python-dateutil==2.9.0.post0",
     "python-dotenv==1.2.2",
-    "requests==2.33.1",
+    "requests==2.34.2",
     "wget==3.2.0",
-    "xarray==2025.6.1",
+    "xarray==2026.4.0",
 ]
 
 [dependency-groups]
 dev = [
     "pytest==9.0.3",
     "pytest-cov==7.1.0",
-    "bumpver==2025.1131",
+    "bumpver==2026.1132",
     "ruff>=0.15.13",
     "ty>=0.0.39",
 ]
