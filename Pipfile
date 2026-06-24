@@ -14,18 +14,18 @@ numpy = "==2.2.6"
 pandas = "==2.3.3"
 python-dateutil = "==2.9.0.post0"
 python-dotenv = "==1.2.2"
-requests = "==2.33.1"
+requests = "==2.34.2"
 wget = "==3.2.0"
 xarray = "==2025.6.1"
 
 [dev-packages]
-black = "==26.3.1"
+black = "==26.5.1"
 flake8 = "==7.3.0"
 isort = "==8.0.1"
-mypy = "==1.20.2"
-pytest = "==9.0.3"
+mypy = "==2.1.0"
+pytest = "==9.1.1"
 pytest-cov = "==7.1.0"
-bumpver = "==2025.1131"
+bumpver = "==2026.1132"
 
 [requires]
 python_version = "3.10"
