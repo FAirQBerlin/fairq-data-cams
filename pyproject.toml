@@ -42,7 +42,7 @@ per-file-ignores = { "*/test_*.py" = ["S101"] }
 ignore = ["COM812", "D", "DTZ"]
 
 [tool.bumpver]
-current_version = "2026.06.0"
+current_version = "2026.09.0"
 version_pattern = "YYYY.0M.PATCH"
 commit_message = "bump version to {old_version} -> {new_version}"
 tag_message = "v{new_version}"
